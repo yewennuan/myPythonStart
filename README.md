@@ -1,2 +1,2 @@
 # myPythonStart
-code for studying python
+code for python via python 3
