@@ -144,7 +144,7 @@ print('-----------%s-----------' % seq)
 decimal.getcontext().prec = 4
 print(Decimal('0.01') + Decimal("0.02"))
 
-print(Fraction(4,6))
+print(Fraction(4, 6))
 print(Fraction("0.25"))
 
 # demo
@@ -153,21 +153,175 @@ print(Fraction("0.25"))
    set支持union(联合), intersection(交), difference(差)和symmetric difference(对称差集)等数学运算。
    set支持x in set, len(set), for x in set。
    set不记录元素位置或者插入点, 因此不支持indexing, slicing, 或其它类序列的操作
- """
+"""
 seq = 5
 print('-----------%s-----------' % seq)
 s = {3, 5, 9, 10}  # 创建一个数值集合，返回{3, 5, 9, 10}
-t = set("Hello")                             # 创建一个唯一字符的集合返回{}
+t = set("Hello")  # 创建一个唯一字符的集合返回{}
 print(t | s)
-print(t.union(s))                   # t 和 s的并集
+print(t.union(s))  # t 和 s的并集
 print(t & s)
-print(t.intersection(s))            # t 和 s的交集
-print(t.difference(s))               # 求差集（项在t中, 但不在s中）
+print(t.intersection(s))  # t 和 s的交集
+print(t.difference(s))  # 求差集（项在t中, 但不在s中）
 print(t ^ s)
-t.symmetric_difference(s)      # 对称差集（项在t或s中, 但不会同时出现在二者中）
+t.symmetric_difference(s)  # 对称差集（项在t或s中, 但不会同时出现在二者中）
 t.add('x')
-t.remove('H')                  # 增加/删除一个item
-s.update([10,37,42])                         # 利用[......]更新s集合
+t.remove('H')  # 增加/删除一个item
+s.update([10, 37, 42])  # 利用[......]更新s集合
 print(s)
 
+# -- 集合frozenset，不可变对象
+'''
+     set是可变对象，即不存在hash值，不能作为字典的键值。同样的还有list等(tuple是可以作为字典key的)
+    frozenset是不可变对象，即存在hash值，可作为字典的键值
+    frozenset对象没有add、remove等方法，但有union/intersection/difference等方法
+'''
 
+seq = 6
+print('-----------%s-----------' % seq)
+a = {1, 2, 3}
+b = set()
+# b.add(a)  # error: set是不可哈希类型
+b.add(frozenset(a))  # ok，将set变为frozenset，可哈希
+
+seq = 7
+print('-----------%s-----------' % seq)
+# -- 布尔类型bool
+print(type(True))  # 返回<class 'bool'>
+print(isinstance(False, int))  # bool类型属于整型，所以返回True
+print(True == 1)
+print(True is 1)  # 输出(True, False)
+
+s7 = 'johu'
+print(s7 * 3)
+print('a {1} {0} parrot'.format('kind', 'red'))
+print(',.'.join(['a', 'b', 'c']))
+
+s71 = 'stringobject'
+
+print(s71.ljust(1))
+print(list(map(ord, 'spam')))
+
+# 类似于java System.out.println(2>3?1:2)
+print(1 if 2 > 3 else 2)
+
+# else语句会在循环结束后执行，除非在循环中执行了break，同样的还有for语句
+a = 0
+while a < 5:
+    print("dd")
+    a = a + 1
+    break
+else:
+    print("else")
+
+for teama, teamb in zip(["Packers", "49ers"], ["Ravens", "Patriots"]):
+    print(teama + " vs. " + teamb)
+
+for index, team in enumerate(["Packers", "49ers", "Ravens", "Patriots"]):
+    print(index, team)  # 输出0, Packers \n 1, 49ers \n ......
+
+for (a, b) in [(1, 2), (3, 4)]:  # 最简单的赋值
+    print(a, b)
+for ((a, b), c) in [((1, 2), 3), ((4, 5), 6)]:  # 自动解包赋值
+    print(a, b, c)
+for ((a, b), c) in [((1, 2), 3), ("XY", 6)]:  # 自动解包 a = X, b = Y, c = 6
+    print(a, b, c)
+for (a, *b) in [(1, 2, 3), (4, 5, 6)]:
+    print(a, b)
+
+M = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+
+G = (sum(row) for row in M)  # 使用小括号可以创建所需结果的生成器generator object
+next(G), next(G), next(G)  # 输出(6, 15, 24)
+G = {sum(row) for row in M}  # G = {6, 15, 24} 解析语法还可以生成集合和字典
+G = {i: sum(M[i]) for i in range(3)}  # G = {0: 6, 1: 15, 2: 24}
+
+
+def func():
+    """
+    function document
+    """
+    print()
+
+
+class Employee(object):
+    """
+    class document
+    """
+    print()
+
+
+print(func.__doc__)  # 输出函数文档字符串
+print(Employee.__doc__)  # 输出类的文档字符串
+
+# -- 命名惯例:
+"""
+以单一下划线开头的变量名(_X)不会被from module import*等语句导入
+前后有两个下划线的变量名(__X__)是系统定义的变量名，对解释器有特殊意义
+以两个下划线开头但不以下划线结尾的变量名(__X)是类的本地(私有)变量
+"""
+
+# -- 获取列表的子表的方法:
+x = [1, 2, 3, 4, 5, 6]
+print(x[:3])  # 前3个[1,2,3]
+print(x[1:5])  # 中间4个[2,3,4,5]
+print(x[-3:])  # 最后3个[4,5,6]
+print(x[::2])  # 奇数项[1,3,5]
+print(x[1::2])  # 偶数项[2,4,6]
+
+# -- 手动迭代：iter和next
+L = [1, 2]
+I = iter(L)  # I为L的迭代器
+next(I)  # 返回1
+next(I)  # 返回2
+#I.next()  # Error:StopIteration
+
+# -- Python中的可迭代对象
+"""
+1.range迭代器
+2.map、zip和filter迭代器
+3.字典视图迭代器：D.keys()), D.items()等
+4.文件类型
+"""
+
+
+def maker(N):
+    def action(X):
+        return X ** N
+
+    return action
+
+
+f = maker(2)  # pass 2 to N
+f(3)  # 9, pass 3 to X
+
+start = 100
+
+
+def tester(start):
+    def nested(label):
+        nonlocal start  # 指定start为tester函数内的local变量 而不是global变量start
+        print(label, start)
+        start += 3
+
+    return nested
+
+
+f1 = tester(start)
+#函数属性
+tester.xxx = 2
+print(f1(2))
+
+
+#-- 类的伪私有属性:使用__attr
+class C1(object):
+    def __init__(self, name):
+        self.__name = name          # 此时类的__name属性为伪私有属性 原理 它会自动变成self._C1__name = name
+    def __str__(self):
+        return 'self.name = %s' % self.__name
+I = C1('tom')
+print(I)                            # 返回 self.name = tom
+I.__name = 'jeey'                   # 这里无法访问 __name为伪私有属性
+I._C1__name = 'jeey'                # 这里可以修改成功 self.name = jeey
+print(I._C1__name)
+print(I.__name)
