@@ -19,6 +19,7 @@ class MyClass(object):
 
 
 if __name__ == '__main__':
+    print "-" * 40
     one = MyClass()
     two = MyClass()
     print(one == two)

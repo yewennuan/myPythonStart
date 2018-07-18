@@ -74,7 +74,7 @@ def close_db(error):
         g.sqlite_db.close()
 
 
-@api.route('/')
+@api.route('/en')
 class Somewhere(Resource):
     def get(self):
         db = get_db()
