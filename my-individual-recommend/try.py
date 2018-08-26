@@ -1,6 +1,8 @@
 # coding=utf-8
+import itertools
 import math
 import time
+import uuid
 from datetime import datetime, timedelta
 from collections import defaultdict
 
@@ -177,5 +179,261 @@ def sleep_test():
     print 1
 
 
+def datetime_test():
+    print 'cal_post_tag start' + datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
+def itertools_groupby_test():
+    for key, group in itertools.groupby('AAABBBCCAAA'):
+        print key, list(group)  # 为什么这里要用list()函数呢？
+
+
+def mydecorator(function):
+    def _mydecorator(*args, **kwargs):
+        print 1
+        res = function(*args, **kwargs)
+        print 2
+        return res
+
+    return _mydecorator
+
+
+@mydecorator
+def decorator_test(i, k):
+    print i, k
+
+
+def mydecorator1(arg1, arg2):
+    def _mydecorator(function):
+        def __mydecorator(*args, **kwargs):
+            print arg1
+            tmp = (arg1, arg2)
+            res = function(*tmp, **kwargs)
+            print arg2
+            return res
+
+        return __mydecorator
+
+    return _mydecorator
+
+
+@mydecorator1("arg1", "arg2")
+def decorator_test1(i, k):
+    print i, k
+
+
+class Foo(object):
+    def __init__(self, func):
+        self._func = func
+
+    def __call__(self):
+        print ('class decorator runing')
+        self._func()
+        print ('class decorator ending')
+
+
+@Foo
+def class_decorator_test():
+    print ('bar')
+
+
+def none_test():
+    if None == "divide":
+        print 1
+    else:
+        print 2
+
+
+def ypw_test1():
+    now = int(time.time())
+    tmp_apk_name = "youpinwei_%s_%s.apk" % ("channel", now)
+    print tmp_apk_name
+
+
+def exception_test():
+    raise Exception("hehe")
+
+
+def list_limit_test():
+    temp = [1, 2, 3, 4, 5, 6]
+    print temp[0:5]
+
+
+def integer_divide():
+    print float(1) / 3
+
+
+def string_blank_test():
+    str = ''
+    if str:
+        print 1
+    else:
+        print 2
+
+
+def dict_pop_test():
+    a = {"a1": "des"}
+    print a
+    a.pop("a2")
+    print a
+
+
+def func_debug_test(param1, param2, param3):
+    return param1 * param2 * param3
+
+
+class MagicA(object):
+    a = 10
+
+
+class Fjs(object):
+    def __init__(self, name):
+        self.name = name
+
+    def hello(self):
+        print "said by : ", self.name
+
+    def fjs(self, name):
+        if name == self.name:
+            print "yes"
+        else:
+            print "no"
+
+
+class Wrap_Fjs(object):
+    def __init__(self, fjs):
+        self._fjs = fjs
+
+    def __getattr__(self, item):
+        if item == "hello":
+            print "调用hello方法了"
+        elif item == "fjs":
+            print "调用fjs方法了"
+        return getattr(self._fjs, item)
+
+
+class MyClass():
+    def __init__(self):
+        self.__superprivate = "Hello"
+        self._semiprivate = ", world!"
+
+    def test(self):
+        print self._semiprivate
+        print self.__superprivate
+
+
+def class_test():
+    class MyClass1():
+        def __init__(self):
+            self.__superprivate = "Hello"
+            self._semiprivate = ", world!"
+
+        def test(self):
+            print self._semiprivate
+            print self.__superprivate
+
+    test = MyClass1()
+    test.test()
+
+
+def local_proxy_test1():
+    from werkzeug.local import LocalStack
+    user_stack = LocalStack()
+    user_stack.push({'name': 'Bob'})
+    user_stack.push({'name': 'John'})
+
+    def get_user():
+        # do something to get User object and return it
+        return user_stack.pop()
+
+    # 直接调用函数获取user对象
+    user = get_user()
+    print user['name']
+    print user['name']
+
+
+def local_proxy_test2():
+    from werkzeug.local import LocalStack, LocalProxy
+    user_stack = LocalStack()
+    user_stack.push({'name': 'Bob'})
+    user_stack.push({'name': 'John'})
+
+    def get_user():
+        # do something to get User object and return it
+        return user_stack.pop()
+
+    # 通过LocalProxy使用user对象
+    user = LocalProxy(get_user)
+    print user['name']
+    print user['name']
+
+
+def time_func():
+    date = datetime.strptime('2018-07-01', '%Y-%m-%d')
+    print date
+
+
+def map_tests():
+    list = [{"title": "fsdsdf"}, {"title": "sfd"}]
+    print [x.get("title", "") for x in list]
+
+
+def test_kwargs():
+    def fun_sss(id, **kwargs):
+        print id
+        print kwargs.get("abc", "default")
+
+    fun_sss(8)
+
+
+def uuid_test():
+    str1 = str(uuid.uuid4())
+    str1 = str1.replace("-", "")
+    str1 = str1[0:8]
+    print str1
+
+
+def kwargs_test():
+    def fun(id=0, ab="1", **kwargs):
+        print id, ab, kwargs['sx']
+
+    tmp_dict = {"sx": "sx", "bx": "bx"}
+    fun(2, 'strs', **tmp_dict)
+
+
+def time_test1():
+    cur_time = time.time()
+    inta = cur_time - cur_time % 86400
+    date1 = datetime.fromtimestamp(inta)
+    print date1
+
+
+def time_test11():
+    now = datetime.now()
+    now_ts = int(time.mktime(now.timetuple()))
+    now_ts = now_ts - now_ts % 86400
+    wee_hour = datetime.utcfromtimestamp(now_ts)
+    print wee_hour
+
+
+def time_test222():
+    now = datetime.now()
+    print now
+    now_ts = int(time.mktime(now.timetuple()))
+    print now_ts
+    print datetime.fromtimestamp(now_ts)
+    print datetime.utcfromtimestamp(now_ts)
+
+
+def test_1232():
+    now = datetime.now()
+    year = now.year
+    month = now.month
+    day = now.day
+    hour = 25
+    print now
+    print datetime(year, month, day, 3)
+
+
 if __name__ == '__main__':
-    sleep_test()
+    test_1232()

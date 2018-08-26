@@ -1,5 +1,18 @@
-from flask import Flask
-if __name__ =="__main__":
-    app = Flask(__name__)
-    app.config.from_object('config')
-    print app.config["MAIL_FROM_EMAIL"]
+from flask import Flask, url_for
+
+app = Flask(__name__)
+
+
+@app.route('/')
+def hello_world():
+    print url_for('index')
+    return 'Hello World!'
+
+
+@app.route('/index')
+def index():
+    return 'index!'
+
+
+if __name__ == '__main__':
+    app.run()
