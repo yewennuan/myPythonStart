@@ -1,10 +1,12 @@
 # coding=utf-8
+import functools
 import itertools
 import math
 import time
 import uuid
 from datetime import datetime, timedelta
 from collections import defaultdict
+import random
 
 
 def fun1():
@@ -204,13 +206,16 @@ def decorator_test(i, k):
 
 
 def mydecorator1(arg1, arg2):
-    def _mydecorator(function):
+    def _mydecorator(f):
+        @functools.wraps(f)
         def __mydecorator(*args, **kwargs):
             print arg1
             tmp = (arg1, arg2)
-            res = function(*tmp, **kwargs)
+            res = f(*tmp, **kwargs)
             print arg2
             return res
+
+        __mydecorator.param = "param"
 
         return __mydecorator
 
@@ -435,5 +440,77 @@ def test_1232():
     print datetime(year, month, day, 3)
 
 
+class RedisTest(object):
+
+    @staticmethod
+    def test_short(param1, param2=None):
+        return "{},{}".format(param1, param2)
+
+    @classmethod
+    def test_short1(cls, param1, param2=None):
+        return "{},{}".format(param1, param2)
+
+    @classmethod
+    def test_short2(cls, param1, param2=None):
+        return {"param1": param1, "param2": param2}
+
+    @classmethod
+    def test_short3(cls, param1, param2=None):
+        return {"param1": param1, "param2": param2}
+
+
+def fun_tump():
+    return 1, 2
+
+
+def fun_shuffle():
+    a1 = []
+    random.shuffle(a1)
+    print a1
+
+
+class Foo(object):
+    boo = 40
+    _boo = 50
+    __boo = 60  # _Foo__boo
+
+    def __init__(self):
+        self.__booo = 70
+
+    def __test(self):  # _Foo__test
+        print "__test"
+
+    @staticmethod
+    def test_main():
+        print Foo.boo
+        print Foo._boo
+        print Foo._Foo__boo
+        # print Foo.__boo 不能这样
+        foo = Foo()
+        print foo._Foo__booo
+        foo._Foo__test()
+
+class YotooTimeWidth:
+    WIDTH = 24
+
+    @staticmethod
+    def get_time_points(now_date=None):
+        if now_date is None:
+            now_date = datetime.now()
+
+        start_year = now_date.year
+        start_month = now_date.month
+        start_day = now_date.day
+
+        start_time = datetime(start_year, start_month, start_day)
+        end_time_tmp = now_date + timedelta(days=1)
+        end_year = end_time_tmp.year
+        end_month = end_time_tmp.month
+        end_day = end_time_tmp.day
+        end_time = datetime(end_year, end_month, end_day)
+        return start_time,end_time
+
 if __name__ == '__main__':
-    test_1232()
+    new_dict={"a":1}
+    print new_dict.get("b")
+    # print YotooTimeWidth.get_time_points(datetime.now())
