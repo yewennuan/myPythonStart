@@ -13,7 +13,7 @@ from thrift.server import TServer
 from thrift_demo.example import ttypes, format_data
 
 __HOST = 'localhost'
-__PORT = 8080
+__PORT = 9090
 
 class FormatDataHandler(object):
     def do_format(self, data):
